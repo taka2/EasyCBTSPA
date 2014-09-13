@@ -1,0 +1,275 @@
+<html>
+<head>
+<title>EasyCBT</title>
+<script language="JavaScript">
+// ----------------------------------------------------------------------
+// 以下に問題を作成してください。
+// ----------------------------------------------------------------------
+// テストタイトル
+var examinationName = "Javaクイズ";
+// テストデータ
+var questions = [
+  {
+    description: "次のうち、プリミティブ型でないものはどれ"
+    , multiple_answer: true
+    , answers: [
+      {description: "int", correct: false}
+      , {description: "boolean", correct: false}
+      , {description: "String", correct: true}
+      , {description: "short", correct: false}
+    ]
+  }
+  , {
+    description: "intの最大値はどれか"
+    , multiple_answer: false
+    , answers: [
+      {description: "32767", correct: false}
+      , {description: "2147483647", correct: true}
+      , {description: "9223372036854775807", correct: false}
+      , {description: "\\uffff", correct: false}
+    ]
+  }
+  , {
+    description: "コンパイルエラーが起きないのはどれか"
+    , multiple_answer: true
+    , answers: [
+      {description: "ArrayList a = new ArrayList();", correct: true}
+      , {description: "List a = new ArrayList();", correct: true}
+      , {description: "List a = new List();", correct: false}
+      , {description: "ArrayList a = new List();", correct: false}
+    ]
+  }
+];
+// ----------------------------------------------------------------------
+// 問題は以上。
+// ----------------------------------------------------------------------
+
+// Arrayクラスを拡張
+// （参考）Will It Shuffle?<
+// http://bost.ocks.org/mike/shuffle/compare.html
+Array.prototype.shuffle = function() {
+  return this.sort(function() {
+    return Math.random() - .5;
+  });
+};
+
+// 画面初期表示イベントハンドラ
+function body_onLoad() {
+  var bodyHTML = '';
+  // テストタイトル
+  bodyHTML += '<h1>' + examinationName + '</h1>';
+
+  // テストデータ
+  bodyHTML += '<form name="form1">';
+  bodyHTML += '<ul class="questions">';
+
+  // オリジナルインデックスを保存
+  for(var i=0; i<questions.length; i++) {
+    questions[i].index = i;
+  }
+  questions = questions.shuffle();
+  for(var i=0; i<questions.length; i++) {
+    var question = questions[i];
+    bodyHTML += '<li>';
+    bodyHTML += 'Q' + (i+1) + '. ' + question.description;
+    bodyHTML += '<ul class="answers">';
+    // オリジナルインデックスを保存
+    var answers = question.answers;
+    for(var j=0; j<answers.length; j++) {
+      answers[j].index = j;
+    }
+    answers = answers.shuffle();
+    for(var j=0; j<answers.length; j++) {
+      var answer = answers[j];
+      bodyHTML += '<li>';
+      if(question.multiple_answer) {
+        bodyHTML += '<input type="checkbox" name="answers' + (i+1) + '[' + question.index + ']" value="' + answer.index + '"> ' + answer.description;
+      } else {
+        bodyHTML += '<input type="radio" name="answers' + (i+1) + '[' + question.index + ']" value="' + answer.index + '"> ' + answer.description;
+      }
+      bodyHTML += '</li>';
+    }
+    bodyHTML += '</ul>';
+    bodyHTML += '</li>';
+  }
+  bodyHTML += '</ul>';
+  bodyHTML += '<input type="button" name="finish" value="Finish" onClick="finish_onClick()">'
+  bodyHTML += '</form>';
+  document.body.innerHTML = bodyHTML;
+}
+
+// Finishボタンイベントハンドラ
+function finish_onClick() {
+  // 答え合わせ
+  var bodyHTML = '';
+
+  bodyHTML += '<h1>' + examinationName + '</h1>';
+  bodyHTML += '<ul class="questions">';
+  var index = 0;
+  var questionCount = 0;
+  var correctAnswersCount = 0;
+  for(elem in document.form1.elements) {
+    // ラジオボタン or チェックボックスのみ取得
+    if(elem.substring(0, 7) === 'answers') {
+      questionCount++;
+      // 問題を特定
+      var questionNumber = extractNumber(elem);
+      var question = findQuestion(questionNumber);
+      bodyHTML += '<li>';
+      bodyHTML += 'Q' + (++index) + '. ' + question.description + '';
+
+      bodyHTML += '<ul class="results">';
+      if(question.multiple_answer) {
+        // チェックボックスの場合
+        var answers = [];
+        var correct = true;
+        var checkboxObject = document.form1.elements[elem];
+        for(var i=0; i<checkboxObject.length; i++) {
+          if(checkboxObject[i].checked) {
+            var answerNumber = Number(checkboxObject[i].value);
+            var answer = findAnswer(question.answers, answerNumber);
+            correct = correct && answer.correct;
+            answers.push(answer);
+          }
+        }
+        if(answers.length == 0){
+          // 選択なしの場合は不正解とする
+          correct = false;
+        }
+        var correctAnswers = getCorrectAnswers(question);
+
+        if(correct) {
+          // 正解
+          bodyHTML += '<li>正解！</li>';
+          correctAnswersCount++;
+        } else {
+          // 不正解
+          bodyHTML += '<li>不正解。。</li>';
+        }
+        bodyHTML += '<li>回答: ' + concatAnswersDescription(answers) + '</li>';
+        bodyHTML += '<li>正解: ' + concatAnswersDescription(correctAnswers) + '</li>';
+      } else {
+        // ラジオボタンの場合
+        var radioButtonValue = document.form1.elements[elem].value;
+        var answerNumber = Number(radioButtonValue);
+        var answer = findAnswer(question.answers, answerNumber);
+        var correctAnswer = getCorrectAnswers(question)[0];
+
+        if(radioButtonValue && answer.correct) {
+          // 正解
+          bodyHTML += '<li>正解！</li>';
+          correctAnswersCount++;
+        } else {
+          // 不正解
+          bodyHTML += '<li>不正解。。</li>';
+        }
+        bodyHTML += '<li>回答: ' + (radioButtonValue ? answer.description : '') + '</li>';
+        bodyHTML += '<li>正解: ' + correctAnswer.description + '</li>';
+      }
+      bodyHTML += '</ul>';
+      bodyHTML += '</li>';
+    }
+  }
+  bodyHTML += '</ul>';
+
+  // 成績
+  bodyHTML += '<p class="record">';
+  bodyHTML += questionCount + '問中' + correctAnswersCount + '問正解でした。<br/>正答率=' + calcPercentageOfCorrectAnswers(questionCount, correctAnswersCount) + '%';
+  bodyHTML += '</p>';
+
+  // 戻るリンク
+  bodyHTML += '<p class="back">';
+  bodyHTML += '<a href = "javascript:location.reload();">戻る</a>';
+  bodyHTML += '</p>';
+  document.body.innerHTML = bodyHTML;
+}
+
+// answers[x]の文字列からxを取り出す
+function extractNumber(answersString) {
+  var result = answersString.match(/answers.+\[(.*)\]/);
+  return Number(result[1]);
+}
+
+// questions配列から特定のインデックスを持つものを探す
+function findQuestion(index) {
+  for(var i=0; i<questions.length; i++) {
+    if(questions[i].index === index) {
+      return questions[i];
+    }
+  }
+}
+
+// question配列から正解オブジェクトを取り出す
+function getCorrectAnswers(question) {
+  var result = [];
+  for(var i=0; i<question.answers.length; i++) {
+    var answer = question.answers[i];
+    if(answer.correct) {
+      result.push(answer);
+    }
+  }
+
+  return result;
+}
+
+// answers配列から特定のインデックスを持つものを探す
+function findAnswer(answers, index) {
+  for(var i=0; i<answers.length; i++) {
+    if(answers[i].index === index) {
+      return answers[i];
+    }
+  }
+}
+
+// answers配列のdescriptionを改行でつないだ文字列を返す
+function concatAnswersDescription(answers) {
+  var resultStringArray = [];
+  for(var i=0; i<answers.length; i++) {
+    resultStringArray.push(answers[i].description);
+  }
+
+  return resultStringArray.join('</br>');
+}
+
+// 正答率を計算する
+function calcPercentageOfCorrectAnswers(questionCount, correctAnswersCount) {
+  var percentage = (correctAnswersCount / questionCount * 100);
+  // 小数点第2位まで表示（切り捨て）
+  return (Math.floor(percentage * 100) / 100);
+}
+
+</script>
+<style type="text/css">
+.questions {
+  list-style: none;
+  margin: 10;
+}
+
+.questions li {
+  border: none;
+  padding: 1px 0;
+}
+
+.answers {
+  list-style: none;
+  margin: 10;
+}
+
+.answers li {
+  border: none;
+}
+
+.results {
+  border: none;
+  margin: 10;
+}
+
+.results li {
+  padding: 1px 0;
+  list-style: none;
+}
+</style>
+</head>
+<body onLoad="body_onLoad()">
+</body>
+</html>
