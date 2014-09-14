@@ -79,6 +79,7 @@ function body_onLoad() {
     for(var j=0; j<answers.length; j++) {
       answers[j].index = j;
     }
+
     answers = answers.shuffle();
     for(var j=0; j<answers.length; j++) {
       var answer = answers[j];
@@ -155,12 +156,17 @@ function finish_onClick() {
         bodyHTML += '<li>正解: ' + concatAnswersDescription(correctAnswers) + '</li>';
       } else {
         // ラジオボタンの場合
-        var radioButtonValue = document.form1.elements[elem].value;
+	var radioButtonObject = document.form1.elements[elem];
+	for(var i=0; i<radioButtonObject.length; i++) {
+	  if(radioButtonObject[i].checked) {
+	    var radioButtonValue = radioButtonObject[i].value;
+	  }
+	}
         var answerNumber = Number(radioButtonValue);
         var answer = findAnswer(question.answers, answerNumber);
         var correctAnswer = getCorrectAnswers(question)[0];
 
-        if(radioButtonValue && answer.correct) {
+        if((radioButtonValue != undefined) && answer.correct) {
           // 正解
           bodyHTML += '<li>正解！</li>';
           correctAnswersCount++;
@@ -168,7 +174,7 @@ function finish_onClick() {
           // 不正解
           bodyHTML += '<li>不正解。。</li>';
         }
-        bodyHTML += '<li>回答: ' + (radioButtonValue ? answer.description : '') + '</li>';
+        bodyHTML += '<li>回答: ' + ((radioButtonValue != undefined) ? answer.description : '') + '</li>';
         bodyHTML += '<li>正解: ' + correctAnswer.description + '</li>';
       }
       bodyHTML += '</ul>';
@@ -230,10 +236,10 @@ function findAnswer(answers, index) {
 function concatAnswersDescription(answers) {
   var resultStringArray = [];
   for(var i=0; i<answers.length; i++) {
-    resultStringArray.push(answers[i].description);
+    resultStringArray.push("(" + (i+1) + ") " + answers[i].description);
   }
 
-  return resultStringArray.join('</br>');
+  return resultStringArray.join(' ');
 }
 
 // 正答率を計算する
