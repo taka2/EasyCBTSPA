@@ -138,6 +138,10 @@ function finish_onClick() {
           correct = false;
         }
         var correctAnswers = getCorrectAnswers(question);
+        if(answers.length != correctAnswers.length) {
+	  // 回答数と正解数があわない場合は不正解とする
+          correct = false;
+        }
 
         if(correct) {
           // 正解
