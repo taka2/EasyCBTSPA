@@ -1,16 +1,17 @@
 <html>
 <head>
+<meta charset="UTF-8">
 <title>EasyCBT</title>
 <script language="JavaScript">
 // ----------------------------------------------------------------------
-// ˆÈ‰º‚É–â‘è‚ğì¬‚µ‚Ä‚­‚¾‚³‚¢B
+// ä»¥ä¸‹ã«å•é¡Œã‚’ä½œæˆã—ã¦ãã ã•ã„ã€‚
 // ----------------------------------------------------------------------
-// ƒeƒXƒgƒ^ƒCƒgƒ‹
-var examinationName = "JavaƒNƒCƒY";
-// ƒeƒXƒgƒf[ƒ^
+// ãƒ†ã‚¹ãƒˆã‚¿ã‚¤ãƒˆãƒ«
+var examinationName = "Javaã‚¯ã‚¤ã‚º";
+// ãƒ†ã‚¹ãƒˆãƒ‡ãƒ¼ã‚¿
 var questions = [
   {
-    description: "Ÿ‚Ì‚¤‚¿AƒvƒŠƒ~ƒeƒBƒuŒ^‚Å‚È‚¢‚à‚Ì‚Í‚Ç‚ê"
+    description: "æ¬¡ã®ã†ã¡ã€ãƒ—ãƒªãƒŸãƒ†ã‚£ãƒ–å‹ã§ãªã„ã‚‚ã®ã¯ã©ã‚Œ"
     , multiple_answer: true
     , answers: [
       {description: "int", correct: false}
@@ -20,7 +21,7 @@ var questions = [
     ]
   }
   , {
-    description: "int‚ÌÅ‘å’l‚Í‚Ç‚ê‚©"
+    description: "intã®æœ€å¤§å€¤ã¯ã©ã‚Œã‹"
     , multiple_answer: false
     , answers: [
       {description: "32767", correct: false}
@@ -30,7 +31,7 @@ var questions = [
     ]
   }
   , {
-    description: "ƒRƒ“ƒpƒCƒ‹ƒGƒ‰[‚ª‹N‚«‚È‚¢‚Ì‚Í‚Ç‚ê‚©"
+    description: "ã‚³ãƒ³ãƒ‘ã‚¤ãƒ«ã‚¨ãƒ©ãƒ¼ãŒèµ·ããªã„ã®ã¯ã©ã‚Œã‹"
     , multiple_answer: true
     , answers: [
       {description: "ArrayList a = new ArrayList();", correct: true}
@@ -41,11 +42,11 @@ var questions = [
   }
 ];
 // ----------------------------------------------------------------------
-// –â‘è‚ÍˆÈãB
+// å•é¡Œã¯ä»¥ä¸Šã€‚
 // ----------------------------------------------------------------------
 
-// ArrayƒNƒ‰ƒX‚ğŠg’£
-// iQljWill It Shuffle?<
+// Arrayã‚¯ãƒ©ã‚¹ã‚’æ‹¡å¼µ
+// ï¼ˆå‚è€ƒï¼‰Will It Shuffle?<
 // http://bost.ocks.org/mike/shuffle/compare.html
 Array.prototype.shuffle = function() {
   return this.sort(function() {
@@ -53,17 +54,17 @@ Array.prototype.shuffle = function() {
   });
 };
 
-// ‰æ–Ê‰Šú•\¦ƒCƒxƒ“ƒgƒnƒ“ƒhƒ‰
+// ç”»é¢åˆæœŸè¡¨ç¤ºã‚¤ãƒ™ãƒ³ãƒˆãƒãƒ³ãƒ‰ãƒ©
 function body_onLoad() {
   var bodyHTML = '';
-  // ƒeƒXƒgƒ^ƒCƒgƒ‹
+  // ãƒ†ã‚¹ãƒˆã‚¿ã‚¤ãƒˆãƒ«
   bodyHTML += '<h1>' + examinationName + '</h1>';
 
-  // ƒeƒXƒgƒf[ƒ^
+  // ãƒ†ã‚¹ãƒˆãƒ‡ãƒ¼ã‚¿
   bodyHTML += '<form name="form1">';
   bodyHTML += '<ul class="questions">';
 
-  // ƒIƒŠƒWƒiƒ‹ƒCƒ“ƒfƒbƒNƒX‚ğ•Û‘¶
+  // ã‚ªãƒªã‚¸ãƒŠãƒ«ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ã‚’ä¿å­˜
   for(var i=0; i<questions.length; i++) {
     questions[i].index = i;
   }
@@ -73,7 +74,7 @@ function body_onLoad() {
     bodyHTML += '<li>';
     bodyHTML += 'Q' + (i+1) + '. ' + question.description;
     bodyHTML += '<ul class="answers">';
-    // ƒIƒŠƒWƒiƒ‹ƒCƒ“ƒfƒbƒNƒX‚ğ•Û‘¶
+    // ã‚ªãƒªã‚¸ãƒŠãƒ«ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ã‚’ä¿å­˜
     var answers = question.answers;
     for(var j=0; j<answers.length; j++) {
       answers[j].index = j;
@@ -98,9 +99,9 @@ function body_onLoad() {
   document.body.innerHTML = bodyHTML;
 }
 
-// Finishƒ{ƒ^ƒ“ƒCƒxƒ“ƒgƒnƒ“ƒhƒ‰
+// Finishãƒœã‚¿ãƒ³ã‚¤ãƒ™ãƒ³ãƒˆãƒãƒ³ãƒ‰ãƒ©
 function finish_onClick() {
-  // “š‚¦‡‚í‚¹
+  // ç­”ãˆåˆã‚ã›
   var bodyHTML = '';
 
   bodyHTML += '<h1>' + examinationName + '</h1>';
@@ -109,10 +110,10 @@ function finish_onClick() {
   var questionCount = 0;
   var correctAnswersCount = 0;
   for(elem in document.form1.elements) {
-    // ƒ‰ƒWƒIƒ{ƒ^ƒ“ or ƒ`ƒFƒbƒNƒ{ƒbƒNƒX‚Ì‚İæ“¾
+    // ãƒ©ã‚¸ã‚ªãƒœã‚¿ãƒ³ or ãƒã‚§ãƒƒã‚¯ãƒœãƒƒã‚¯ã‚¹ã®ã¿å–å¾—
     if(elem.substring(0, 7) === 'answers') {
       questionCount++;
-      // –â‘è‚ğ“Á’è
+      // å•é¡Œã‚’ç‰¹å®š
       var questionNumber = extractNumber(elem);
       var question = findQuestion(questionNumber);
       bodyHTML += '<li>';
@@ -120,7 +121,7 @@ function finish_onClick() {
 
       bodyHTML += '<ul class="results">';
       if(question.multiple_answer) {
-        // ƒ`ƒFƒbƒNƒ{ƒbƒNƒX‚Ìê‡
+        // ãƒã‚§ãƒƒã‚¯ãƒœãƒƒã‚¯ã‚¹ã®å ´åˆ
         var answers = [];
         var correct = true;
         var checkboxObject = document.form1.elements[elem];
@@ -133,38 +134,38 @@ function finish_onClick() {
           }
         }
         if(answers.length == 0){
-          // ‘I‘ğ‚È‚µ‚Ìê‡‚Í•s³‰ğ‚Æ‚·‚é
+          // é¸æŠãªã—ã®å ´åˆã¯ä¸æ­£è§£ã¨ã™ã‚‹
           correct = false;
         }
         var correctAnswers = getCorrectAnswers(question);
 
         if(correct) {
-          // ³‰ğ
-          bodyHTML += '<li>³‰ğI</li>';
+          // æ­£è§£
+          bodyHTML += '<li>æ­£è§£ï¼</li>';
           correctAnswersCount++;
         } else {
-          // •s³‰ğ
-          bodyHTML += '<li>•s³‰ğBB</li>';
+          // ä¸æ­£è§£
+          bodyHTML += '<li>ä¸æ­£è§£ã€‚ã€‚</li>';
         }
-        bodyHTML += '<li>‰ñ“š: ' + concatAnswersDescription(answers) + '</li>';
-        bodyHTML += '<li>³‰ğ: ' + concatAnswersDescription(correctAnswers) + '</li>';
+        bodyHTML += '<li>å›ç­”: ' + concatAnswersDescription(answers) + '</li>';
+        bodyHTML += '<li>æ­£è§£: ' + concatAnswersDescription(correctAnswers) + '</li>';
       } else {
-        // ƒ‰ƒWƒIƒ{ƒ^ƒ“‚Ìê‡
+        // ãƒ©ã‚¸ã‚ªãƒœã‚¿ãƒ³ã®å ´åˆ
         var radioButtonValue = document.form1.elements[elem].value;
         var answerNumber = Number(radioButtonValue);
         var answer = findAnswer(question.answers, answerNumber);
         var correctAnswer = getCorrectAnswers(question)[0];
 
         if(radioButtonValue && answer.correct) {
-          // ³‰ğ
-          bodyHTML += '<li>³‰ğI</li>';
+          // æ­£è§£
+          bodyHTML += '<li>æ­£è§£ï¼</li>';
           correctAnswersCount++;
         } else {
-          // •s³‰ğ
-          bodyHTML += '<li>•s³‰ğBB</li>';
+          // ä¸æ­£è§£
+          bodyHTML += '<li>ä¸æ­£è§£ã€‚ã€‚</li>';
         }
-        bodyHTML += '<li>‰ñ“š: ' + (radioButtonValue ? answer.description : '') + '</li>';
-        bodyHTML += '<li>³‰ğ: ' + correctAnswer.description + '</li>';
+        bodyHTML += '<li>å›ç­”: ' + (radioButtonValue ? answer.description : '') + '</li>';
+        bodyHTML += '<li>æ­£è§£: ' + correctAnswer.description + '</li>';
       }
       bodyHTML += '</ul>';
       bodyHTML += '</li>';
@@ -172,25 +173,25 @@ function finish_onClick() {
   }
   bodyHTML += '</ul>';
 
-  // ¬Ñ
+  // æˆç¸¾
   bodyHTML += '<p class="record">';
-  bodyHTML += questionCount + '–â’†' + correctAnswersCount + '–â³‰ğ‚Å‚µ‚½B<br/>³“š—¦=' + calcPercentageOfCorrectAnswers(questionCount, correctAnswersCount) + '%';
+  bodyHTML += questionCount + 'å•ä¸­' + correctAnswersCount + 'å•æ­£è§£ã§ã—ãŸã€‚<br/>æ­£ç­”ç‡=' + calcPercentageOfCorrectAnswers(questionCount, correctAnswersCount) + '%';
   bodyHTML += '</p>';
 
-  // –ß‚éƒŠƒ“ƒN
+  // æˆ»ã‚‹ãƒªãƒ³ã‚¯
   bodyHTML += '<p class="back">';
-  bodyHTML += '<a href = "javascript:location.reload();">–ß‚é</a>';
+  bodyHTML += '<a href = "javascript:location.reload();">æˆ»ã‚‹</a>';
   bodyHTML += '</p>';
   document.body.innerHTML = bodyHTML;
 }
 
-// answers[x]‚Ì•¶š—ñ‚©‚çx‚ğæ‚èo‚·
+// answers[x]ã®æ–‡å­—åˆ—ã‹ã‚‰xã‚’å–ã‚Šå‡ºã™
 function extractNumber(answersString) {
   var result = answersString.match(/answers.+\[(.*)\]/);
   return Number(result[1]);
 }
 
-// questions”z—ñ‚©‚ç“Á’è‚ÌƒCƒ“ƒfƒbƒNƒX‚ğ‚Â‚à‚Ì‚ğ’T‚·
+// questionsé…åˆ—ã‹ã‚‰ç‰¹å®šã®ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ã‚’æŒã¤ã‚‚ã®ã‚’æ¢ã™
 function findQuestion(index) {
   for(var i=0; i<questions.length; i++) {
     if(questions[i].index === index) {
@@ -199,7 +200,7 @@ function findQuestion(index) {
   }
 }
 
-// question”z—ñ‚©‚ç³‰ğƒIƒuƒWƒFƒNƒg‚ğæ‚èo‚·
+// questioné…åˆ—ã‹ã‚‰æ­£è§£ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’å–ã‚Šå‡ºã™
 function getCorrectAnswers(question) {
   var result = [];
   for(var i=0; i<question.answers.length; i++) {
@@ -212,7 +213,7 @@ function getCorrectAnswers(question) {
   return result;
 }
 
-// answers”z—ñ‚©‚ç“Á’è‚ÌƒCƒ“ƒfƒbƒNƒX‚ğ‚Â‚à‚Ì‚ğ’T‚·
+// answersé…åˆ—ã‹ã‚‰ç‰¹å®šã®ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ã‚’æŒã¤ã‚‚ã®ã‚’æ¢ã™
 function findAnswer(answers, index) {
   for(var i=0; i<answers.length; i++) {
     if(answers[i].index === index) {
@@ -221,7 +222,7 @@ function findAnswer(answers, index) {
   }
 }
 
-// answers”z—ñ‚Ìdescription‚ğ‰üs‚Å‚Â‚È‚¢‚¾•¶š—ñ‚ğ•Ô‚·
+// answersé…åˆ—ã®descriptionã‚’æ”¹è¡Œã§ã¤ãªã„ã æ–‡å­—åˆ—ã‚’è¿”ã™
 function concatAnswersDescription(answers) {
   var resultStringArray = [];
   for(var i=0; i<answers.length; i++) {
@@ -231,10 +232,10 @@ function concatAnswersDescription(answers) {
   return resultStringArray.join('</br>');
 }
 
-// ³“š—¦‚ğŒvZ‚·‚é
+// æ­£ç­”ç‡ã‚’è¨ˆç®—ã™ã‚‹
 function calcPercentageOfCorrectAnswers(questionCount, correctAnswersCount) {
   var percentage = (correctAnswersCount / questionCount * 100);
-  // ¬”“_‘æ2ˆÊ‚Ü‚Å•\¦iØ‚èÌ‚Äj
+  // å°æ•°ç‚¹ç¬¬2ä½ã¾ã§è¡¨ç¤ºï¼ˆåˆ‡ã‚Šæ¨ã¦ï¼‰
   return (Math.floor(percentage * 100) / 100);
 }
 
