@@ -8,6 +8,8 @@
 // ----------------------------------------------------------------------
 // テストタイトル
 var examinationName = "Javaクイズ";
+// 出題数
+var questionCount = 2;
 // テストデータ
 var questions = [
   {
@@ -68,9 +70,10 @@ function body_onLoad() {
   for(var i=0; i<questions.length; i++) {
     questions[i].index = i;
   }
-  questions = questions.shuffle();
-  for(var i=0; i<questions.length; i++) {
-    var question = questions[i];
+  var copiedQuestions = questions.concat();
+  copiedQuestions = copiedQuestions.shuffle().slice(0, questionCount);
+  for(var i=0; i<copiedQuestions.length; i++) {
+    var question = copiedQuestions[i];
     bodyHTML += '<li>';
     bodyHTML += 'Q' + (i+1) + '. ' + question.description;
     bodyHTML += '<ul class="answers">';
@@ -80,9 +83,10 @@ function body_onLoad() {
       answers[j].index = j;
     }
 
-    answers = answers.shuffle();
-    for(var j=0; j<answers.length; j++) {
-      var answer = answers[j];
+    var copiedAnswers = answers.concat();
+    copiedAnswers = copiedAnswers.shuffle();
+    for(var j=0; j<copiedAnswers.length; j++) {
+      var answer = copiedAnswers[j];
       bodyHTML += '<li>';
       if(question.multiple_answer) {
         bodyHTML += '<input type="checkbox" name="answers' + (i+1) + '[' + question.index + ']" value="' + answer.index + '"> ' + answer.description;
@@ -116,7 +120,7 @@ function finish_onClick() {
       questionCount++;
       // 問題を特定
       var questionNumber = extractNumber(elem);
-      var question = findQuestion(questionNumber);
+      var question = questions[questionNumber];
       bodyHTML += '<li>';
       bodyHTML += 'Q' + (++index) + '. ' + question.description + '';
 
@@ -129,7 +133,7 @@ function finish_onClick() {
         for(var i=0; i<checkboxObject.length; i++) {
           if(checkboxObject[i].checked) {
             var answerNumber = Number(checkboxObject[i].value);
-            var answer = findAnswer(question.answers, answerNumber);
+            var answer = question.answers[answerNumber];
             correct = correct && answer.correct;
             answers.push(answer);
           }
@@ -163,7 +167,7 @@ function finish_onClick() {
 	  }
 	}
         var answerNumber = Number(radioButtonValue);
-        var answer = findAnswer(question.answers, answerNumber);
+        var answer = question.answers[answerNumber];
         var correctAnswer = getCorrectAnswers(question)[0];
 
         if((radioButtonValue != undefined) && answer.correct) {
@@ -201,15 +205,6 @@ function extractNumber(answersString) {
   return Number(result[1]);
 }
 
-// questions配列から特定のインデックスを持つものを探す
-function findQuestion(index) {
-  for(var i=0; i<questions.length; i++) {
-    if(questions[i].index === index) {
-      return questions[i];
-    }
-  }
-}
-
 // question配列から正解オブジェクトを取り出す
 function getCorrectAnswers(question) {
   var result = [];
@@ -221,15 +216,6 @@ function getCorrectAnswers(question) {
   }
 
   return result;
-}
-
-// answers配列から特定のインデックスを持つものを探す
-function findAnswer(answers, index) {
-  for(var i=0; i<answers.length; i++) {
-    if(answers[i].index === index) {
-      return answers[i];
-    }
-  }
 }
 
 // answers配列のdescriptionを改行でつないだ文字列を返す
