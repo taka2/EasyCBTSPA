@@ -1,0 +1,28 @@
+.questions {
+  list-style: none;
+  margin: 10;
+}
+
+.questions li {
+  border: none;
+  padding: 1px 0;
+}
+
+.answers {
+  list-style: none;
+  margin: 10;
+}
+
+.answers li {
+  border: none;
+}
+
+.results {
+  border: none;
+  margin: 10;
+}
+
+.results li {
+  padding: 1px 0;
+  list-style: none;
+}
