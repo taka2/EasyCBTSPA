@@ -66,10 +66,10 @@ function finish_onClick() {
   var correctAnswersCount = 0;
   for(var k=0; k<questionCount; k++) {
     // "answers(k+1)["で始まる要素を取得
-    var elem = $("input[name ^= 'answers" + (k+1) + "\[']")[0];
+    var elem = $("input[name ^= 'answers" + (k+1) + "\[']");
 
     // 問題を特定
-    var questionNumber = extractNumber(elem.name);
+    var questionNumber = extractNumber(elem[0].name);
     var question = questions[questionNumber];
     bodyHTML += '<li>';
     bodyHTML += 'Q' + (++index) + '. ' + question.description + '';
@@ -79,10 +79,9 @@ function finish_onClick() {
       // チェックボックスの場合
       var answers = [];
       var correct = true;
-      var checkboxObject = document.form1.elements[elem.name];
-      for(var i=0; i<checkboxObject.length; i++) {
-        if(checkboxObject[i].checked) {
-          var answerNumber = Number(checkboxObject[i].value);
+      for(var i=0; i<elem.length; i++) {
+        if(elem[i].checked) {
+          var answerNumber = Number(elem[i].value);
           var answer = question.answers[answerNumber];
           correct = correct && answer.correct;
           answers.push(answer);
@@ -110,12 +109,7 @@ function finish_onClick() {
       bodyHTML += '<li>正解: ' + concatAnswersDescription(correctAnswers) + '</li>';
     } else {
       // ラジオボタンの場合
-      var radioButtonObject = document.form1.elements[elem.name];
-      for(var i=0; i<radioButtonObject.length; i++) {
-        if(radioButtonObject[i].checked) {
-          var radioButtonValue = radioButtonObject[i].value;
-        }
-      }
+      var radioButtonValue = elem.filter(":checked").val();
       var answerNumber = Number(radioButtonValue);
       var answer = question.answers[answerNumber];
       var correctAnswer = getCorrectAnswers(question)[0];
