@@ -9,6 +9,24 @@ Array.prototype.shuffle = function() {
 
 // 画面初期表示イベントハンドラ
 function body_onLoad() {
+  // 問題データの（シャッフル前）オリジナルインデックスを保存
+  for(var i=0; i<questions.length; i++) {
+    questions[i].index = i;
+    var answers = questions[i].answers;
+    for(var j=0; j<answers.length; j++) {
+      answers[j].index = j;
+    }
+  }
+
+  // 問題をシャッフルして、指定数だけ取り出す
+  var copiedQuestions = questions.concat();
+  copiedQuestions = copiedQuestions.shuffle().slice(0, questionCount);
+
+  // 問題データに表示用インデックスを追加
+  for(var i=0; i<copiedQuestions.length; i++) {
+    copiedQuestions.displayIndex = j;
+  }
+
   var bodyHTML = '';
   // テストタイトル
   bodyHTML += '<h1>' + examinationName + '</h1>';
@@ -17,27 +35,15 @@ function body_onLoad() {
   bodyHTML += '<form name="form1">';
   bodyHTML += '<ul class="questions">';
 
-  // オリジナルインデックスを保存
-  for(var i=0; i<questions.length; i++) {
-    questions[i].index = i;
-  }
-  var copiedQuestions = questions.concat();
-  copiedQuestions = copiedQuestions.shuffle().slice(0, questionCount);
   for(var i=0; i<copiedQuestions.length; i++) {
     var question = copiedQuestions[i];
     bodyHTML += '<li>';
     bodyHTML += 'Q' + (i+1) + '. ' + question.description;
     bodyHTML += '<ul class="answers">';
-    // オリジナルインデックスを保存
+
     var answers = question.answers;
     for(var j=0; j<answers.length; j++) {
-      answers[j].index = j;
-    }
-
-    var copiedAnswers = answers.concat();
-    copiedAnswers = copiedAnswers.shuffle();
-    for(var j=0; j<copiedAnswers.length; j++) {
-      var answer = copiedAnswers[j];
+      var answer = answers[j];
       bodyHTML += '<li>';
       if(question.multiple_answer) {
         bodyHTML += '<input type="checkbox" name="answers' + (i+1) + '[' + question.index + ']" value="' + answer.index + '"> ' + answer.description;
