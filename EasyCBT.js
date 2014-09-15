@@ -60,24 +60,24 @@ function finish_onClick() {
         // 回答数と正解数があわない場合は不正解とする
         correct = false;
       }
-      question.correct = correct;
-      question.correctAnswers = correctAnswers;
-      question.selectedAnswers = answers;
     } else {
       // ラジオボタンの場合
       var answers = [];
+      var correct = false;
       var radioButtonValue = elem.filter(":checked").val();
       if(radioButtonValue != undefined) {
         var answerNumber = Number(radioButtonValue);
         var answer = question.answers[answerNumber];
+        correct = answer.correct;
         answers.push(answer);
       }
       var correctAnswers = getCorrectAnswers(question);
-
-      question.correct = (radioButtonValue != undefined) && answer.correct;
-      question.correctAnswers = correctAnswers;
-      question.selectedAnswers = answers;
     }
+
+    // questionオブジェクトに正否、回答、解答をセット
+    question.correct = correct;
+    question.correctAnswers = correctAnswers;
+    question.selectedAnswers = answers;
     if(question.correct) {
       correctAnswersCount++;
     }
