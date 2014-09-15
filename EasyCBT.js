@@ -63,78 +63,76 @@ function finish_onClick() {
   bodyHTML += '<h1>' + examinationName + '</h1>';
   bodyHTML += '<ul class="questions">';
   var index = 0;
-  var questionCount = 0;
   var correctAnswersCount = 0;
-  for(elem in document.form1.elements) {
-    // ラジオボタン or チェックボックスのみ取得
-    if(elem.substring(0, 7) === 'answers') {
-      questionCount++;
-      // 問題を特定
-      var questionNumber = extractNumber(elem);
-      var question = questions[questionNumber];
-      bodyHTML += '<li>';
-      bodyHTML += 'Q' + (++index) + '. ' + question.description + '';
+  for(var k=0; k<questionCount; k++) {
+    // "answers(k+1)["で始まる要素を取得
+    var elem = $("input[name ^= 'answers" + (k+1) + "\[']")[0];
 
-      bodyHTML += '<ul class="results">';
-      if(question.multiple_answer) {
-        // チェックボックスの場合
-        var answers = [];
-        var correct = true;
-        var checkboxObject = document.form1.elements[elem];
-        for(var i=0; i<checkboxObject.length; i++) {
-          if(checkboxObject[i].checked) {
-            var answerNumber = Number(checkboxObject[i].value);
-            var answer = question.answers[answerNumber];
-            correct = correct && answer.correct;
-            answers.push(answer);
-          }
-        }
-        if(answers.length == 0){
-          // 選択なしの場合は不正解とする
-          correct = false;
-        }
-        var correctAnswers = getCorrectAnswers(question);
-        if(answers.length != correctAnswers.length) {
-	  // 回答数と正解数があわない場合は不正解とする
-          correct = false;
-        }
+    // 問題を特定
+    var questionNumber = extractNumber(elem.name);
+    var question = questions[questionNumber];
+    bodyHTML += '<li>';
+    bodyHTML += 'Q' + (++index) + '. ' + question.description + '';
 
-        if(correct) {
-          // 正解
-          bodyHTML += '<li>正解！</li>';
-          correctAnswersCount++;
-        } else {
-          // 不正解
-          bodyHTML += '<li>不正解。。</li>';
+    bodyHTML += '<ul class="results">';
+    if(question.multiple_answer) {
+      // チェックボックスの場合
+      var answers = [];
+      var correct = true;
+      var checkboxObject = document.form1.elements[elem.name];
+      for(var i=0; i<checkboxObject.length; i++) {
+        if(checkboxObject[i].checked) {
+          var answerNumber = Number(checkboxObject[i].value);
+          var answer = question.answers[answerNumber];
+          correct = correct && answer.correct;
+          answers.push(answer);
         }
-        bodyHTML += '<li>回答: ' + concatAnswersDescription(answers) + '</li>';
-        bodyHTML += '<li>正解: ' + concatAnswersDescription(correctAnswers) + '</li>';
-      } else {
-        // ラジオボタンの場合
-	var radioButtonObject = document.form1.elements[elem];
-	for(var i=0; i<radioButtonObject.length; i++) {
-	  if(radioButtonObject[i].checked) {
-	    var radioButtonValue = radioButtonObject[i].value;
-	  }
-	}
-        var answerNumber = Number(radioButtonValue);
-        var answer = question.answers[answerNumber];
-        var correctAnswer = getCorrectAnswers(question)[0];
-
-        if((radioButtonValue != undefined) && answer.correct) {
-          // 正解
-          bodyHTML += '<li>正解！</li>';
-          correctAnswersCount++;
-        } else {
-          // 不正解
-          bodyHTML += '<li>不正解。。</li>';
-        }
-        bodyHTML += '<li>回答: ' + ((radioButtonValue != undefined) ? answer.description : '') + '</li>';
-        bodyHTML += '<li>正解: ' + correctAnswer.description + '</li>';
       }
-      bodyHTML += '</ul>';
-      bodyHTML += '</li>';
+      if(answers.length == 0){
+        // 選択なしの場合は不正解とする
+        correct = false;
+      }
+      var correctAnswers = getCorrectAnswers(question);
+      if(answers.length != correctAnswers.length) {
+        // 回答数と正解数があわない場合は不正解とする
+        correct = false;
+      }
+
+      if(correct) {
+        // 正解
+        bodyHTML += '<li>正解！</li>';
+        correctAnswersCount++;
+      } else {
+        // 不正解
+        bodyHTML += '<li>不正解。。</li>';
+      }
+      bodyHTML += '<li>回答: ' + concatAnswersDescription(answers) + '</li>';
+      bodyHTML += '<li>正解: ' + concatAnswersDescription(correctAnswers) + '</li>';
+    } else {
+      // ラジオボタンの場合
+      var radioButtonObject = document.form1.elements[elem.name];
+      for(var i=0; i<radioButtonObject.length; i++) {
+        if(radioButtonObject[i].checked) {
+          var radioButtonValue = radioButtonObject[i].value;
+        }
+      }
+      var answerNumber = Number(radioButtonValue);
+      var answer = question.answers[answerNumber];
+      var correctAnswer = getCorrectAnswers(question)[0];
+
+      if((radioButtonValue != undefined) && answer.correct) {
+        // 正解
+        bodyHTML += '<li>正解！</li>';
+        correctAnswersCount++;
+      } else {
+        // 不正解
+        bodyHTML += '<li>不正解。。</li>';
+      }
+      bodyHTML += '<li>回答: ' + ((radioButtonValue != undefined) ? answer.description : '') + '</li>';
+      bodyHTML += '<li>正解: ' + correctAnswer.description + '</li>';
     }
+    bodyHTML += '</ul>';
+    bodyHTML += '</li>';
   }
   bodyHTML += '</ul>';
 
