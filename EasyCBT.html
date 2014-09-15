@@ -9,6 +9,8 @@
 <script language="JavaScript" src="questions.js"></script>
 </head>
 <body onLoad="body_onLoad()">
+<div id="rendering_area"></div>
+
 <!-- 問題ページ用テンプレート -->
 <script type="text/html" id="questions_template">
   <h1><%=examinationName%></h1>
@@ -36,6 +38,50 @@
     </ul>
     <input type="button" name="finish" value="Finish" onClick="finish_onClick()">
   </form>
+</script>
+
+<!-- 結果ページ用テンプレート -->
+<script type="text/html" id="result_template">
+  <h1><%=examinationName%></h1>
+  <ul class="questions">
+  <% for(var k=0; k<questions.length; k++) { %>
+    <li>
+      Q<%=(k+1)%>. <%=questions[k].description%>
+      <ul class="results">
+      <% if(questions[k].multiple_answer) { %>
+        <!-- チェックボックスの場合 -->
+        <% if(questions[k].correct) { %>
+          <li>正解！</li>
+        <% } else { %>
+          <li>不正解。。</li>
+        <% } %>
+          <li>回答: <%=concatAnswersDescription(questions[k].selectedAnswers)%></li>
+          <li>正解: <%=concatAnswersDescription(questions[k].correctAnswers)%></li>
+      <% } else { %>
+        <!-- ラジオボタンの場合 -->
+        <% if(questions[k].correct) { %>
+          <li>正解！</li>
+        <% } else { %>
+          <li>不正解。。</li>
+        <% } %>
+          <li>回答: <%=((questions[k].selectedAnswer != undefined) ? questions[k].selectedAnswer.description : '')%></li>
+          <li>正解: <%=questions[k].correctAnswer.description%></li>
+      <% } %>
+      </ul>
+    </li>
+  <% } %>
+  </ul>
+
+  <!-- 成績 -->
+  <p class="record">
+  <%=questionCount%>問中<%=correctAnswersCount%>問正解でした。<br/>
+  正答率=<%=calcPercentageOfCorrectAnswers(questionCount, correctAnswersCount)%>%
+  </p>
+
+  <!-- 戻るリンク -->
+  <p class="back">
+  <a href = "javascript:location.reload();">戻る</a>
+  </p>
 </script>
 </body>
 </html>

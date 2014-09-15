@@ -23,7 +23,7 @@ function body_onLoad() {
   copiedQuestions = copiedQuestions.shuffle().slice(0, questionCount);
 
   // 問題ページを描画
-  document.body.innerHTML = tmpl("questions_template", {examinationName: examinationName, questions: copiedQuestions});
+  document.getElementById("rendering_area").innerHTML = tmpl("questions_template", {examinationName: examinationName, questions: copiedQuestions});
 }
 
 // Finishボタンイベントハンドラ
@@ -82,58 +82,13 @@ function finish_onClick() {
     copiedQuestions.push(question);
   }
 
-  // 結果ページを表示
-  var bodyHTML = '';
-
-  bodyHTML += '<h1>' + examinationName + '</h1>';
-  bodyHTML += '<ul class="questions">';
-  var index = 0;
-  for(var k=0; k<copiedQuestions.length; k++) {
-    var question = copiedQuestions[k];
-    bodyHTML += '<li>';
-    bodyHTML += 'Q' + (++index) + '. ' + question.description + '';
-
-    bodyHTML += '<ul class="results">';
-    if(question.multiple_answer) {
-      // チェックボックスの場合
-      if(question.correct) {
-        // 正解
-        bodyHTML += '<li>正解！</li>';
-        //correctAnswersCount++;
-      } else {
-        // 不正解
-        bodyHTML += '<li>不正解。。</li>';
-      }
-      bodyHTML += '<li>回答: ' + concatAnswersDescription(question.selectedAnswers) + '</li>';
-      bodyHTML += '<li>正解: ' + concatAnswersDescription(question.correctAnswers) + '</li>';
-    } else {
-      // ラジオボタンの場合
-      if(question.correct) {
-        // 正解
-        bodyHTML += '<li>正解！</li>';
-        //correctAnswersCount++;
-      } else {
-        // 不正解
-        bodyHTML += '<li>不正解。。</li>';
-      }
-      bodyHTML += '<li>回答: ' + ((question.selectedAnswer != undefined) ? question.selectedAnswer.description : '') + '</li>';
-      bodyHTML += '<li>正解: ' + question.correctAnswer.description + '</li>';
-    }
-    bodyHTML += '</ul>';
-    bodyHTML += '</li>';
-  }
-  bodyHTML += '</ul>';
-
-  // 成績
-  bodyHTML += '<p class="record">';
-  bodyHTML += questionCount + '問中' + correctAnswersCount + '問正解でした。<br/>正答率=' + calcPercentageOfCorrectAnswers(questionCount, correctAnswersCount) + '%';
-  bodyHTML += '</p>';
-
-  // 戻るリンク
-  bodyHTML += '<p class="back">';
-  bodyHTML += '<a href = "javascript:location.reload();">戻る</a>';
-  bodyHTML += '</p>';
-  document.body.innerHTML = bodyHTML;
+  // 結果ページを描画
+  document.getElementById("rendering_area").innerHTML = tmpl("result_template", {
+    examinationName: examinationName
+    , questions: copiedQuestions
+    , questionCount: questionCount
+    , correctAnswersCount : correctAnswersCount
+  });
 }
 
 // answers[x]の文字列からxを取り出す
