@@ -4,9 +4,38 @@
 <title>EasyCBT</title>
 <link href="EasyCBT.css" rel="stylesheet" type="text/css">
 <script language="JavaScript" src="jquery-2.1.1.min.js"></script>
+<script language="JavaScript" src="micro-templating.js"></script>
 <script language="JavaScript" src="EasyCBT.js"></script>
 <script language="JavaScript" src="questions.js"></script>
 </head>
 <body onLoad="body_onLoad()">
+<!-- 問題ページ用テンプレート -->
+<script type="text/html" id="questions_template">
+  <h1><%=examinationName%></h1>
+
+  <form name="form1">
+    <ul class="questions">
+
+    <% for(var i=0; i<questions.length; i++) { %>
+      <li>
+        Q<%=(i+1)%>. <%=questions[i].description%>
+        <ul class="answers">
+
+        <% for(var j=0; j<questions[i].answers.length; j++) { %>
+          <li>
+          <% if(questions[i].multiple_answer) { %>
+            <input type="checkbox" name="answers<%=(i+1)%>[<%=questions[i].index%>]" value="<%=questions[i].answers[j].index%>"> <%=questions[i].answers[j].description%>
+          <% } else { %>
+            <input type="radio" name="answers<%=(i+1)%>[<%=questions[i].index%>]" value="<%=questions[i].answers[j].index%>"> <%=questions[i].answers[j].description%>
+          <% } %>
+          </li>
+        <% } %>
+        </ul>
+      </li>
+    <% } %>
+    </ul>
+    <input type="button" name="finish" value="Finish" onClick="finish_onClick()">
+  </form>
+</script>
 </body>
 </html>
