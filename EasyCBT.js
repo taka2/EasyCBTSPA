@@ -65,16 +65,18 @@ function finish_onClick() {
       question.selectedAnswers = answers;
     } else {
       // ラジオボタンの場合
+      var answers = [];
       var radioButtonValue = elem.filter(":checked").val();
       if(radioButtonValue != undefined) {
         var answerNumber = Number(radioButtonValue);
         var answer = question.answers[answerNumber];
+        answers.push(answer);
       }
-      var correctAnswer = getCorrectAnswers(question)[0];
+      var correctAnswers = getCorrectAnswers(question);
 
       question.correct = (radioButtonValue != undefined) && answer.correct;
-      question.correctAnswer = correctAnswer;
-      question.selectedAnswer = answer;
+      question.correctAnswers = correctAnswers;
+      question.selectedAnswers = answers;
     }
     if(question.correct) {
       correctAnswersCount++;
@@ -112,6 +114,12 @@ function getCorrectAnswers(question) {
 
 // answers配列のdescriptionを改行でつないだ文字列を返す
 function concatAnswersDescription(answers) {
+  if(answers.length == 1) {
+    // 1件の場合は加工せず返す
+    return answers[0].description;
+  }
+
+  // 複数件の場合は加工して返す
   var resultStringArray = [];
   for(var i=0; i<answers.length; i++) {
     resultStringArray.push("(" + (i+1) + ") " + answers[i].description);

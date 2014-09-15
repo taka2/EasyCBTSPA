@@ -48,25 +48,13 @@
     <li>
       Q<%=(k+1)%>. <%=questions[k].description%>
       <ul class="results">
-      <% if(questions[k].multiple_answer) { %>
-        <!-- チェックボックスの場合 -->
-        <% if(questions[k].correct) { %>
-          <li>正解！</li>
-        <% } else { %>
-          <li>不正解。。</li>
-        <% } %>
-          <li>回答: <%=concatAnswersDescription(questions[k].selectedAnswers)%></li>
-          <li>正解: <%=concatAnswersDescription(questions[k].correctAnswers)%></li>
+      <% if(questions[k].correct) { %>
+        <li>正解！</li>
       <% } else { %>
-        <!-- ラジオボタンの場合 -->
-        <% if(questions[k].correct) { %>
-          <li>正解！</li>
-        <% } else { %>
-          <li>不正解。。</li>
-        <% } %>
-          <li>回答: <%=((questions[k].selectedAnswer != undefined) ? questions[k].selectedAnswer.description : '')%></li>
-          <li>正解: <%=questions[k].correctAnswer.description%></li>
+        <li>不正解。。</li>
       <% } %>
+        <li>回答: <%=concatAnswersDescription(questions[k].selectedAnswers)%></li>
+        <li>正解: <%=concatAnswersDescription(questions[k].correctAnswers)%></li>
       </ul>
     </li>
   <% } %>
